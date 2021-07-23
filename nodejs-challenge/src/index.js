@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require('express')
 
-const app = express();
+const app = express()
 
-app.listen(3333);
+const routes = require('./routes')
 
-app.get('/', (req, res) => {
-    res.json({message: 'ok'})
-})
+app.use(routes)
+
+app.listen(3333)
