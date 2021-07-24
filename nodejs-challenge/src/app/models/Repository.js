@@ -5,9 +5,10 @@ class Repository extends Sequelize.Model {
         super.init(
             {
                 name: Sequelize.STRING,
+                username: Sequelize.STRING,
                 description: Sequelize.STRING,
                 slug: Sequelize.STRING,
-                public: Sequelize.BOOLEAN,
+                is_public: Sequelize.BOOLEAN,
             }, {
                 sequelize
             }

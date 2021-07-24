@@ -1,23 +1,14 @@
-const User = require('../models/User')
+const Repository = require('../models/Repository')
 
-class UserController {
+class RepositoryController {
     async store(req, res) {
-        const { id, name, email, location, bio } = await User.create(req.body)
+        req.body.slug = `${req.body.username}-${req.body.name}`
 
-        return res.json({ id, name, email, location, bio })
-    }
+        const { name, username, description, slug, is_public } = await Repository.create(req.body)
 
-    async show(req, res) {
-        const { id, name, location, bio } = await User.findByPk(req.params.id)
-
-        return res.json({ id, name, location, bio })
-
-    }
-
-    async index(req, res) {
-        
+        return res.json({ name, username, description, slug, is_public })
     }
 
 }
 
-module.exports = new UserController()
+module.exports = new RepositoryController()
