@@ -9,6 +9,15 @@ class RepositoryController {
         return res.json({ name, username, description, slug, is_public })
     }
 
+    async show(req, res) {
+        const { name, username, description, slug, is_public } = await Repository.findByPk(req.params.id)
+
+        console.log(req.params.id)
+
+        return res.json({ name, username, description, slug, is_public })
+
+    }
+
 }
 
 module.exports = new RepositoryController()
