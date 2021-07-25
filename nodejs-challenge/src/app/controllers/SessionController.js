@@ -1,6 +1,8 @@
 const Token = require('../models/Token')
 const User = require('../models/User')
 
+let userId 
+
 class SessionController {
     async store(req, res) {
         
@@ -14,7 +16,15 @@ class SessionController {
 
         const token = await Token.create({ user_id: user.id })
 
+        userId = user.id;
+
         return res.json(token)
+    }
+
+    async authMiddleware(req, res, next) {
+        req.userId = userId
+
+        next()
     }
 
 

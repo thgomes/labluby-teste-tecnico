@@ -10,9 +10,11 @@ routes.get('/', (req, res) => {
     res.json({message: 'hello'})
 })
 
+routes.post('/users', UserController.store)
 routes.post('/session', SessionController.store)
 
-routes.post('/users', UserController.store)
+routes.use(SessionController.authMiddleware)
+
 routes.get('/users/:id', UserController.show)
 
 routes.get('/repository/:id', RepositoryController.show)
