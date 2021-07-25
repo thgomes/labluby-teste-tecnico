@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('repositories', 
+    await queryInterface.createTable('follow', 
     {
       id: {
         type: Sequelize.INTEGER,
@@ -10,27 +10,18 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      user_id: {
+      followed_id: {
         type: Sequelize.INTEGER,
         references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
       },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      slug: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      is_public: {
-        type: Sequelize.BOOLEAN,
+      follower_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'users', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
         allowNull: false,
       },
       created_at: {
@@ -45,6 +36,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('repositories');
+    await queryInterface.dropTable('follow');
   }
 };

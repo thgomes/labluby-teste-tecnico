@@ -1,13 +1,10 @@
 const Sequelize = require('sequelize')
 
-class Repository extends Sequelize.Model {
+class Token extends Sequelize.Model {
     static init(sequelize) {
         super.init(
             {
-                name: Sequelize.STRING,
-                description: Sequelize.STRING,
-                slug: Sequelize.STRING,
-                is_public: Sequelize.BOOLEAN,
+
             }, {
                 sequelize
             }
@@ -21,4 +18,4 @@ class Repository extends Sequelize.Model {
     }
 }
 
-module.exports = Repository;
+module.exports = Token;

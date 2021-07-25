@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-class Repository extends Sequelize.Model {
+class Follow extends Sequelize.Model {
     static init(sequelize) {
         super.init(
             {
@@ -17,8 +17,9 @@ class Repository extends Sequelize.Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' })
+        this.belongsTo(models.User, { foreignKey: 'followed_id', as: 'followed' })
+        this.belongsTo(models.User, { foreignKey: 'follower_id', as: 'follower' })
     }
 }
 
-module.exports = Repository;
+module.exports = Follow;

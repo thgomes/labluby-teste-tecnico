@@ -2,19 +2,20 @@ const Repository = require('../models/Repository')
 
 class RepositoryController {
     async store(req, res) {
-        req.body.slug = `${req.body.username}-${req.body.name}`
+        //req.body.user_id = 2,
+        req.body.slug = `${req.body.userId}-${req.body.name}`
 
-        const { name, username, description, slug, is_public } = await Repository.create(req.body)
+        const { name, user_id, description, slug, is_public } = await Repository.create(req.body)
 
-        return res.json({ name, username, description, slug, is_public })
+        return res.json({ name, user_id, description, slug, is_public })
     }
 
     async show(req, res) {
-        const { name, username, description, slug, is_public } = await Repository.findByPk(req.params.id)
+        const { name, user_id, description, slug, is_public } = await Repository.findByPk(req.params.id)
 
         console.log(req.params.id)
 
-        return res.json({ name, username, description, slug, is_public })
+        return res.json({ name, user_id, description, slug, is_public })
 
     }
 

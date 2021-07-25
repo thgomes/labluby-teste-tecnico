@@ -15,7 +15,11 @@ class UserController {
     }
 
     async index(req, res) {
-        
+        const { page = 1 } = req.query;
+
+        const users = await User.findAndCountAll({
+            where: { user_id: req.userId }
+        })
     }
 
 }
