@@ -28,7 +28,7 @@ class FollowingController {
             ]
         });
 
-        console.log(followerUsers)
+        console.log(followedUsers)
 
         return res.json(followedUsers);
     }
