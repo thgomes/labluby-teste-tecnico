@@ -2,9 +2,21 @@ const User = require('../models/User')
 
 class UserController {
     async store(req, res) {
+        const usernameExists = await User.findOne({ where: { username: req.body.username } })
+
+        if (usernameExists) {
+            return res.status(400).json({ error: 'Username already registered' });
+        }
+
         const { id, name, email, location, bio } = await User.create(req.body)
 
-        return res.json({ id, name, email, location, bio })
+        return res.json({ 
+            id,
+            name,
+            email,
+            location,
+            bio
+        })
     }
 
     async show(req, res) {
@@ -20,6 +32,12 @@ class UserController {
         const users = await User.findAndCountAll({
             where: { user_id: req.userId }
         })
+    }
+
+    async update(req, res) {
+        const user = await User.findByPk(req.userId)
+
+
     }
 
 }
