@@ -24,6 +24,10 @@ class SessionController {
     async authMiddleware(req, res, next) {
         req.userId = userId
 
+        if (!req.userId) {
+            return res.status(401).json({ error: 'unauthorized authentication, please create a session' });
+        } 
+
         next()
     }
 

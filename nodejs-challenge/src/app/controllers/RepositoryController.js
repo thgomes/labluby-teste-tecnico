@@ -1,4 +1,5 @@
 const Repository = require('../models/Repository')
+const User = require('../models/User')
 
 class RepositoryController {
     async store(req, res) {
@@ -10,6 +11,24 @@ class RepositoryController {
         console.log(`userId = ${req.userId}`)
 
         return res.json({ name, user_id, description, slug, is_public })
+    }
+
+    async index(req, res) {
+        const repositories = await Repository.findAndCountAll({
+            where: { user_id: req.userId },
+            order: [['created_at', 'DESC']],
+            attributes: ['id', 'name', 'description', 'slug', 'created_at'],
+            include: [
+              {
+                model: User,
+                as: 'user',
+                attributes: ['name', 'username', 'email'],
+              },
+            ],
+
+          });
+      
+        return res.json(repositories);
     }
 
     async show(req, res) {

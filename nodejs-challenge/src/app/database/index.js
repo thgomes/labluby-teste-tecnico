@@ -4,8 +4,9 @@ const databaseConfig = require('../../config/database')
 const User = require('../models/User')
 const Repositorie = require('../models/Repository')
 const Token = require('../models/Token')
+const Follow = require('../models/Follow')
 
-const models = [User, Repositorie, Token];
+const models = [User, Repositorie, Token, Follow];
 
 class Database {
     constructor() {
