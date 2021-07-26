@@ -18,6 +18,8 @@ routes.post('/session', SessionController.store)
 routes.use(SessionController.authMiddleware)
 
 routes.get('/users/:id', UserController.show)
+routes.put('/users', UserController.update)
+routes.delete('/users', UserController.delete)
 
 routes.get('/repository/:id', RepositoryController.show)
 routes.post('/repository', RepositoryController.store)
