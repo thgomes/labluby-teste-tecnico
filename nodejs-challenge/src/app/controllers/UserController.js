@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const File = require('../models/File')
 
 class UserController {
     async store(req, res) {
@@ -28,30 +29,40 @@ class UserController {
             location,
             bio
         })
-
     }
 
     async update(req, res) {
-        const { name, username, email, location, bio } = req.body
+        const { username } = req.body
         
         const usernameExists = await User.findOne({ where: { username } })
 
         if (usernameExists) {
-            return res.status(400).json({ error: 'Username already registered' });
+            return res.status(400).json({ error: 'Username already registered, choose another username' });
         }
         
         const user = await User.findByPk(req.userId)
 
         await user.update(req.body)
 
+        const { id, name, email, location, bio, avatar } = await User.findByPk(req.userId, {
+            include: [
+              {
+                model: File,
+                as: 'avatar',
+                attributes: ['id', 'path', 'url'],
+              },
+            ],
+        });
+
         return res.json({ 
+            id,
             name,
             username,
             email,
             location, 
-            bio
+            bio,
+            avatar
         })
-
     }
 
     async delete(req, res) {
@@ -68,7 +79,5 @@ class UserController {
         })
     }
 }
-
-
 
 module.exports = new UserController()

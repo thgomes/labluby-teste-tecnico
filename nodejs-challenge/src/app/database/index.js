@@ -5,8 +5,9 @@ const User = require('../models/User')
 const Repositorie = require('../models/Repository')
 const Token = require('../models/Token')
 const Follow = require('../models/Follow')
+const File = require('../models/File')
 
-const models = [User, Repositorie, Token, Follow];
+const models = [User, Repositorie, Token, Follow, File];
 
 class Database {
     constructor() {

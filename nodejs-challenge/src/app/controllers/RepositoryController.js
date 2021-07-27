@@ -38,6 +38,26 @@ class RepositoryController {
 
     }
 
+    async delete(req, res) {
+        const repository = await Repository.findByPk(req.params.id)
+
+        if (!repository) {
+            return res.status(400).json({ error: 'invalid recipe id' })
+        }
+
+        if (repository.user_id != req.userId) {
+            return res.status(401).json({
+                error: "You don't have permission to delete this repository",
+            })
+        }
+
+        const { id, name, slug } = repository
+
+        await repository.destroy()
+
+        return res.json({ id, name, slug })
+    }
+
 }
 
 module.exports = new RepositoryController()

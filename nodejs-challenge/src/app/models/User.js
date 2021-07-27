@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const { associate } = require('./Repository')
 
 class User extends Sequelize.Model {
     static init(sequelize) {
@@ -15,6 +16,10 @@ class User extends Sequelize.Model {
         )
 
         return this
+    }
+
+    static associate(models) {
+        this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' })
     }
 }
 
