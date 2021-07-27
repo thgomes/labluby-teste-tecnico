@@ -11,6 +11,7 @@ const SessionController = require('./app/controllers/SessionController')
 const FollowersController = require('./app/controllers/FollowersController')
 const FollowingController = require('./app/controllers/FollowingController')
 const FileController = require('./app/controllers/FileController')
+const StarController = require('./app/controllers/SessionController')
 
 routes.get('/', (req, res) => {
     res.json({message: 'hello'})
@@ -33,8 +34,12 @@ routes.delete('/repository/:id', RepositoryController.delete)
 routes.get('/follower', FollowersController.index)
 
 routes.get('/following', FollowingController.index)
-routes.post('/following', FollowingController.store)
+routes.post('/following/:id', FollowingController.store)
 routes.delete('/following/:id', FollowingController.delete)
+
+routes.get('/stars', StarsController.index)
+routes.post('/stars/:id', StarsController.store)
+routes.delete('/stars/:id', StarsController.delete)
 
 routes.post('/files', upload.single('file'), FileController.store)
 

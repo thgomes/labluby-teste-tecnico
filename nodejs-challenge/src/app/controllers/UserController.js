@@ -2,6 +2,7 @@ const User = require('../models/User')
 const File = require('../models/File')
 
 class UserController {
+    // Método para criar um usuário
     async store(req, res) {
         const usernameExists = await User.findOne({ where: { username: req.body.username } })
 
@@ -31,6 +32,9 @@ class UserController {
         })
     }
 
+    /* Método para usuário logado editar as informações do seu perfil
+       Neste método é possivel que o usuário coloque uma foto como avatar
+    */
     async update(req, res) {
         const { username } = req.body
         
@@ -65,6 +69,7 @@ class UserController {
         })
     }
 
+    // Método para usuário logado deletar sua conta
     async delete(req, res) {
         const user = await User.findByPk(req.userId)
 

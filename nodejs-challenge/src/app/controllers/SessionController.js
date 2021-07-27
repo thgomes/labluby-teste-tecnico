@@ -4,6 +4,7 @@ const User = require('../models/User')
 let userId 
 
 class SessionController {
+    // Método quer permite que um usuário crie uma sessão por meio do usernme
     async store(req, res) {
         
         const { username } = req.body;
@@ -21,6 +22,10 @@ class SessionController {
         return res.json(token)
     }
 
+    /*
+        Middleware que vai verificar se o usuário está logado e vai disponibilizar
+        o ID do usuário logado para os outros controllers
+    */
     async authMiddleware(req, res, next) {
         req.userId = userId
 

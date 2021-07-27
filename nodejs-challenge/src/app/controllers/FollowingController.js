@@ -4,8 +4,7 @@ const User = require('../models/User')
 class FollowingController {
     // method for logged in user follow another user
     async store(req, res) {
-        const { followed_id } = req.body
-
+        const followed_id = req.params.id
         const follower_id = req.userId
 
         const alreadyFollow = await Follow.findAndCountAll({
@@ -25,8 +24,9 @@ class FollowingController {
 
     // method to show all users followed by the logged in user
     async index(req, res) {
+        const follower_id = req.userId;
         const followedUsers = await Follow.findAndCountAll({
-            where: { follower_id: req.userId },
+            where: { follower_id },
             order: [['created_at', 'DESC']],
             attributes: ['id', 'follower_id', "followed_id", 'created_at'],
             include: [
@@ -44,7 +44,6 @@ class FollowingController {
 
     async delete(req, res) {
         const followed_id = req.params.id
-
         const follower_id = req.userId
 
         const alreadyFollow = await Follow.findAndCountAll({
@@ -53,7 +52,6 @@ class FollowingController {
             attributes: ['id'],
         });
 
-        console.log("aquiiiiiii      ------     " + alreadyFollow.count)
         if (alreadyFollow.count === 0) {
             return res.status(405).json({ error: "You do not follow this user" })
         }

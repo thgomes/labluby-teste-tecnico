@@ -2,8 +2,9 @@ const Repository = require('../models/Repository')
 const User = require('../models/User')
 
 class RepositoryController {
+    // Método que permite usuário logado criar um repositório
     async store(req, res) {
-        //req.body.user_id = 2,
+        req.body.user_id = req.userId
         req.body.slug = `${req.body.userId}-${req.body.name}`
 
         const { name, user_id, description, slug, is_public } = await Repository.create(req.body)
@@ -13,9 +14,11 @@ class RepositoryController {
         return res.json({ name, user_id, description, slug, is_public })
     }
 
+    // Método que permite usuário logado listar todos os seus repositórios
     async index(req, res) {
+        const user_id = req.userId
         const repositories = await Repository.findAndCountAll({
-            where: { user_id: req.userId },
+            where: { user_id },
             order: [['created_at', 'DESC']],
             attributes: ['id', 'name', 'description', 'slug', 'created_at'],
             include: [
