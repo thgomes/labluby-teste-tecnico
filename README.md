@@ -29,3 +29,11 @@ Rode o seguinte comando no terminal para que as tabelas sejam formadas na sua ba
 Rode o seguinte comando para iniciar o servidor em modo de desenvolvimento
 
 ```yarn start```
+
+## ⚙️ Tecnologias Utilizadas
+- Node.js
+- Express
+- Sequelize
+- Multer
+- Postgres
+- Docker
