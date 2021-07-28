@@ -1,4 +1,5 @@
 const express = require('express')
+require('dotenv').config()
 
 const app = express()
 
@@ -15,4 +16,4 @@ app.use(express.urlencoded({
 app.use(routes)
 
 
-app.listen(3333)
+app.listen(process.env.PORT || 3333)
