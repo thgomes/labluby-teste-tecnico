@@ -5,13 +5,16 @@ class RepositoryController {
     // Método que permite usuário logado criar um repositório
     async store(req, res) {
         req.body.user_id = req.userId
-        req.body.slug = `${req.body.userId}-${req.body.name}`
 
-        const { name, user_id, description, slug, is_public } = await Repository.create(req.body)
+        const { username } = User.findByPk({ user_id: req.userId })
+
+        req.body.slug = `${username}-${req.body.name}`
+
+        const { id, name, user_id, description, slug, is_public } = await Repository.create(req.body)
 
         console.log(`userId = ${req.userId}`)
 
-        return res.json({ name, user_id, description, slug, is_public })
+        return res.json({ id, name, user_id, description, slug, is_public })
     }
 
     // Método que permite usuário logado listar todos os seus repositórios
@@ -34,18 +37,58 @@ class RepositoryController {
         return res.json(repositories);
     }
 
+    // Método que permite um usuário logado ver qualquer repositório pelo ID
     async show(req, res) {
-        const { name, user_id, description, slug, is_public } = await Repository.findByPk(req.params.id)
+        const repository = await Repository.findByPk(req.params.id)
 
-        return res.json({ name, user_id, description, slug, is_public })
+        if (!repository) {
+            return res.status(400).json({ error: 'There is not any repository with that ID' });
+        }
+
+        const { id, name, user_id, description, slug, is_public, created_at } = repository
+
+        return res.json({ id, name, user_id, description, slug, is_public, created_at })
 
     }
 
+    // Método que permite um usuário logado atualizar um dos seus repositórios
+    async update(req, res) {
+        const { id } = req.body
+        
+        const repositoryExists = await Repository.findOne({ where: { id } })
+
+        if (!repositoryExists) {
+            return res.status(400).json({ error: 'There is not any repository with that ID' });
+        }
+        
+        const repository = await Repository.findByPk(id)
+
+        if (repository.user_id != req.userId) {
+            return res.status(400).json({ error: 'You cannot edit a repository of another user' });
+        }
+
+        await repository.update(req.body)
+
+        const { name, user_id, description, slug, is_public, created_at } = await User.findByPk(req.userId);
+
+        return res.json({ 
+            id, 
+            name, 
+            user_id, 
+            description, 
+            slug, 
+            is_public, 
+            created_at 
+        })
+    }
+
+
+    // Método que permite um usuário logado deletar um de seus repositórios
     async delete(req, res) {
         const repository = await Repository.findByPk(req.params.id)
 
         if (!repository) {
-            return res.status(400).json({ error: 'invalid recipe id' })
+            return res.status(400).json({ error: 'invalid repository id' })
         }
 
         if (repository.user_id != req.userId) {

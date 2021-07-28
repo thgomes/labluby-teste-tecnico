@@ -1,11 +1,17 @@
 const Star = require('../models/Star')
 const Repository = require('../models/Repository')
 
-class StarsController {
+class StarController {
     // Método para o usuário logado dar uma estrela para determinado repositório
     async store(req, res) {
         const repository_id = req.params.id
         const user_id = req.userId
+
+        const repositoryExists = await Repository.findByPk(repository_id)
+
+        if (!repositoryExists) {
+            return res.status(400).json({ error: 'There is not any repository with that ID' });
+        }
 
         const alreadyStarred = await Star.findAndCountAll({
             where: { user_id, repository_id },
@@ -48,6 +54,12 @@ class StarsController {
         const repository_id = req.params.id
         const user_id = req.userId
 
+        const repositoryExists = await Repository.findByPk(repository_id)
+
+        if (!repositoryExists) {
+            return res.status(400).json({ error: 'There is not any repository with that ID' });
+        }
+
         const alreadyStarred = await Star.findAndCountAll({
             where: { user_id, repository_id },
             order: [['created_at', 'DESC']],
@@ -68,4 +80,4 @@ class StarsController {
     }
 }
 
-module.exports = new StarsController()
+module.exports = new StarController()

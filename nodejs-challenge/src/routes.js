@@ -8,13 +8,13 @@ const upload = multer(multerConfig)
 const UserController = require('./app/controllers/UserController')
 const RepositoryController = require('./app/controllers/RepositoryController')
 const SessionController = require('./app/controllers/SessionController')
-const FollowersController = require('./app/controllers/FollowersController')
+const FollowerController = require('./app/controllers/FollowerController')
 const FollowingController = require('./app/controllers/FollowingController')
 const FileController = require('./app/controllers/FileController')
-const StarController = require('./app/controllers/SessionController')
+const StarController = require('./app/controllers/StarController')
 
 routes.get('/', (req, res) => {
-    res.json({message: 'hello'})
+    res.json({message: 'ok'})
 })
 
 routes.post('/users', UserController.store)
@@ -27,19 +27,22 @@ routes.put('/users', UserController.update)
 routes.delete('/users', UserController.delete)
 
 routes.get('/repository/:id', RepositoryController.show)
-routes.post('/repository', RepositoryController.store)
 routes.get('/repository', RepositoryController.index)
+routes.post('/repository', RepositoryController.store)
+routes.put('/repository', RepositoryController.update)
 routes.delete('/repository/:id', RepositoryController.delete)
 
-routes.get('/follower', FollowersController.index)
+routes.get('/followers', FollowerController.index)
+routes.delete('/followers/:id', FollowerController.delete)
+
+routes.get('/stars', StarController.index)
+routes.post('/stars/:id', StarController.store)
+routes.delete('/stars/:id', StarController.delete)
 
 routes.get('/following', FollowingController.index)
 routes.post('/following/:id', FollowingController.store)
 routes.delete('/following/:id', FollowingController.delete)
 
-routes.get('/stars', StarsController.index)
-routes.post('/stars/:id', StarsController.store)
-routes.delete('/stars/:id', StarsController.delete)
 
 routes.post('/files', upload.single('file'), FileController.store)
 

@@ -2,10 +2,16 @@ const Follow = require('../models/Follow')
 const User = require('../models/User')
 
 class FollowingController {
-    // method for logged in user follow another user
+    // Método para o usuário logado seguir outro usuário
     async store(req, res) {
         const followed_id = req.params.id
         const follower_id = req.userId
+
+        const followed = await User.findByPk(followed_id)
+
+        if (!followed) {
+            return res.status(400).json({ error: 'There is not any user with that ID' });
+        }
 
         const alreadyFollow = await Follow.findAndCountAll({
             where: { followed_id, follower_id },
@@ -14,7 +20,7 @@ class FollowingController {
         });
 
         if (alreadyFollow.count > 0) {
-            return res.status(405).json({ error: "You already this user" })
+            return res.status(405).json({ error: "You already follow this user" })
         }
 
         const follow = await Follow.create({ followed_id, follower_id })
@@ -22,7 +28,7 @@ class FollowingController {
         return res.json(follow)
     }
 
-    // method to show all users followed by the logged in user
+    // Método para o usuário logado listar todos os usuários que ele segue
     async index(req, res) {
         const follower_id = req.userId;
         const followedUsers = await Follow.findAndCountAll({
@@ -42,9 +48,17 @@ class FollowingController {
         return res.json(followedUsers);
     }
 
+    // Método para o usuário logado deixar de seguir outro usuário
     async delete(req, res) {
         const followed_id = req.params.id
         const follower_id = req.userId
+
+
+        const followed = await User.findByPk(followed_id)
+
+        if (!followed) {
+            return res.status(400).json({ error: 'There is not any user with that ID' });
+        }
 
         const alreadyFollow = await Follow.findAndCountAll({
             where: { followed_id, follower_id },
