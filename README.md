@@ -6,7 +6,7 @@ Neste repositório estão contidos os testes técnicos solicitados pela Luby. O 
 
 **Primeiramente instale o [Node.js](https://nodejs.org/en/download/) e o [Yarn](https://yarnpkg.com/), em seguida, clone o projeto rodando este comando:**
 
-```git clone https://github.com/thgomes/netrecipes-web.git```
+```git clone ```
 
 **Instalação das dependências**
 
